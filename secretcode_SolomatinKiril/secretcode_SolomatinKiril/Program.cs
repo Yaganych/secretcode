@@ -11,8 +11,9 @@ namespace secretcode_SolomatinKiril
         static void Main(string[] args)
         {
             //Menu
-            string Square = "■" ;
-            
+            string Square = "■";
+            string levelNumber;
+
             Console.WriteLine("╔══════════════════Kiril Solomatin══════════════════╗");
             Console.WriteLine("║                                                   ║");
             Console.WriteLine("║        Bienvenue dans le jeu: Secret Code         ║");
@@ -39,7 +40,7 @@ namespace secretcode_SolomatinKiril
             Console.Write(Square + " ");
             Console.ResetColor();
             Console.WriteLine(": chiffre absent");
-            Console.WriteLine() ;
+            Console.WriteLine();
 
             Console.WriteLine("Exemple :\nCode secret : 1234 (caché)\nVotre essai : 1325\nIndice");
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -65,6 +66,27 @@ namespace secretcode_SolomatinKiril
 
             Console.WriteLine("Appuie sur une touche pour commencer...  ");
             Console.ForegroundColor = ConsoleColor.Green;
+            Console.ResetColor();
+
+            Console.ReadKey();
+            Console.Clear();
+
+            Console.WriteLine("=== SECRET CODE ===");
+            Console.WriteLine();
+
+            Console.WriteLine("Choisi un niveau :");
+            Console.WriteLine("1. Débutant       (1 à 6, sans doublons, indices visibles)");
+            Console.WriteLine("2. Intermédiaire  (1 à 6, sans doublons, indices discrets)");
+            Console.WriteLine("3. Avancé         (1 à 8, avec doublons, indices visibles)");
+            Console.WriteLine("4. Expert         (1 à 9, avec doublons, indices discrets)");
+            Console.WriteLine();
+
+            Console.WriteLine("Votre choix (1-4) :");
+
+            levelNumber = Console.ReadLine();
+
+            Console.WriteLine(levelNumber);
+
             Console.ReadLine();
         }
             
