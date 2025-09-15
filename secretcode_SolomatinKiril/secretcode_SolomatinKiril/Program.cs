@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
+using System.Net;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ namespace secretcode_SolomatinKiril
         static void Main(string[] args)
         {
             //Menu
+            Console.Title = "Solomatin Kiril, \"SecretCode\"";
             string Square = "■";
 
             Console.WriteLine("╔══════════════════Kiril Solomatin══════════════════╗");
@@ -92,23 +95,32 @@ namespace secretcode_SolomatinKiril
 
                 if (valueOk && levelNumber >= 1 && levelNumber <= 4)
                 {
-                    if ( levelNumber == 1 )
+                    if (levelNumber == 1)
                     {
+                        Console.Clear();
+                        Console.WriteLine("=== SECRET CODE Niveau 1 ===");
+
                         Debutant();
                     }
 
                     if (levelNumber == 2)
                     {
+                        Console.Clear();
+                        Console.WriteLine("=== SECRET CODE Niveau 2 ===");
                         Intermediate();
                     }
 
                     if (levelNumber == 3)
                     {
+                        Console.Clear();
+                        Console.WriteLine("=== SECRET CODE Niveau 3 ===");
                         Advanced();
                     }
 
                     if (levelNumber == 4)
                     {
+                        Console.Clear();
+                        Console.WriteLine("=== SECRET CODE Niveau 4 ===");
                         Expert();
                     }
                 }
@@ -118,67 +130,131 @@ namespace secretcode_SolomatinKiril
                     Console.WriteLine("Choix invalide. Essaie encore.");
                 }
             }
-            
-            
+
+
         }
-        static void Debutant()  
+        static void Debutant()
         {
-            Console.Clear();
-            Console.WriteLine("=== SECRET CODE Niveau 1 ===");
-
-            Random random = new Random();
-            int hiddenNumber = random.Next(1234, 6544);
-            int userNumber;
-            bool validInput = false;
-            bool numberGuessed = false;
-
-            Console.WriteLine(hiddenNumber);
-
-            while (!numberGuessed)
-            {
-                Console.Write("Ente 4 chiffres entre 1 et 6 (ex: 1234) : ");
-
-                validInput = int.TryParse(Console.ReadLine(), out userNumber);
-
-                if (validInput && userNumber != hiddenNumber)
-                {
-                    Console.WriteLine(userNumber + " Malheureusement, ce n'est pas un numéro secret");
-                }
-                
-                else if (validInput && userNumber == hiddenNumber)
-                {
-                    Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
-                    numberGuessed = true;
-                }
-
-                else if (!validInput)
-                {
-                    Console.WriteLine("Tu n'as pas entré un nombre! essaie de nouveau");
-                }
-
-            }
             Console.ReadLine();
         }
 
         static void Intermediate()
         {
-            Console.Clear();
-            Console.WriteLine("=== SECRET CODE Niveau 2 ===");
             Console.ReadLine();
         }
 
         static void Advanced()
         {
-            Console.Clear();
-            Console.WriteLine("=== SECRET CODE Niveau 3 ===");
             Console.ReadLine();
         }
 
         static void Expert()
         {
-            Console.Clear();
-            Console.WriteLine("=== SECRET CODE Niveau 4 ===");
-            Console.ReadLine();
+            Console.Title = "Expert";
+            Random random = new Random();
+
+            List<int> userListNumber = new List<int>();
+            List<int> hiddenNumber = new List<int>();
+
+            int firstNumber = random.Next(1, 10);
+            hiddenNumber.Add(firstNumber);
+            int secondeNumber = random.Next(1, 10);
+            hiddenNumber.Add(secondeNumber);
+            int thirdNumber = random.Next(1, 10);
+            hiddenNumber.Add(thirdNumber);
+            int fourdNumber = random.Next(1, 10);
+            hiddenNumber.Add(fourdNumber);
+
+            int userNumber;
+            bool validInput = false;
+            bool numberGuessed = false;
+            int numberOfAttempts = 1;
+            int correctPlace = 0;
+            int correctNumber = 0;
+
+            foreach (int number in hiddenNumber)
+            {
+                Console.Write(number);
+            }
+            Console.WriteLine();
+            
+            Console.WriteLine("Essais: \n");
+
+            while (!numberGuessed && numberOfAttempts<=10)
+            {
+                Console.WriteLine(numberOfAttempts + "/10 :");
+                Console.Write("Ente 4 chiffres entre 1 et 9 (ex: 1234) :");
+                validInput = int.TryParse(Console.ReadLine(), out userNumber);
+
+                if (validInput)
+                {
+                    foreach (char number in Convert.ToString(userNumber))
+                    {
+                        userListNumber.Add(int.Parse(number.ToString()));
+                    }
+
+                    List<int>findNumbers = new List<int>();
+                    
+
+                    if (userListNumber.SequenceEqual(hiddenNumber))
+                    {
+                        Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
+                        numberGuessed = true;
+                    }
+
+                    else
+                    {   
+                        for (int i = 0; i < hiddenNumber.Count; i++)
+                        {
+                            if (hiddenNumber[i] == userListNumber[i])
+                            {
+                                correctPlace++;
+                                findNumbers.Add(userListNumber[i]);
+                            }
+                        }
+
+                        for (int j = 0; j < hiddenNumber.Count; j++)
+                        {
+                            if (hiddenNumber.Contains(userListNumber[j]) && !findNumbers.Contains(userListNumber[j]))
+                            {
+                                correctNumber++;
+                            }
+                        }
+                            
+
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("{0} bien placé(s), {1} mal placé(s) \n", correctPlace, correctNumber);
+                        Console.ResetColor();
+                        correctNumber = 0;
+                        correctPlace = 0;
+                    }
+
+                    numberOfAttempts++;
+                    userListNumber.Clear();
+                    findNumbers.Clear();
+                }
+
+                else
+                {
+                    Console.WriteLine("Tu n'as pas entré un nombre! essaie de nouveau");
+                }
+            }
+            Console.WriteLine();
+            if (numberOfAttempts > 10)
+            {
+                Console.ForegroundColor= ConsoleColor.Red;
+                Console.Write("Perdu ! Le code était : ");
+                foreach (int number in hiddenNumber)
+                {
+                    Console.Write(number);
+                    
+                }
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.WriteLine("Veux-tu recommencer ? (o / n):");
+                
+            }
         }
     }
 }
+

@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\I319\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\",
+  "WorkspaceRootPath": "D:\\I319\\Soutien\\secretcode\\secretcode\\secretcode_SolomatinKiril\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E555EDCB-7D19-4168-AB49-FDC3D3EBE43A}|secretcode_SolomatinKiril\\secretcode_SolomatinKiril.csproj|d:\\i319\\secretcode_solomatinkiril\\secretcode_solomatinkiril\\secretcode_solomatinkiril\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E555EDCB-7D19-4168-AB49-FDC3D3EBE43A}|secretcode_SolomatinKiril\\secretcode_SolomatinKiril.csproj|d:\\i319\\soutien\\secretcode\\secretcode\\secretcode_solomatinkiril\\secretcode_solomatinkiril\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E555EDCB-7D19-4168-AB49-FDC3D3EBE43A}|secretcode_SolomatinKiril\\secretcode_SolomatinKiril.csproj|solutionrelative:secretcode_solomatinkiril\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "D:\\I319\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\Program.cs",
+              "DocumentMoniker": "D:\\I319\\Soutien\\secretcode\\secretcode\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\Program.cs",
               "RelativeDocumentMoniker": "secretcode_SolomatinKiril\\Program.cs",
-              "ToolTip": "D:\\I319\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\Program.cs",
+              "ToolTip": "D:\\I319\\Soutien\\secretcode\\secretcode\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\Program.cs",
               "RelativeToolTip": "secretcode_SolomatinKiril\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEIAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAANkAAAAAAAAAAAAcwP4AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-29T12:40:43.967Z",
               "EditorCaption": ""
