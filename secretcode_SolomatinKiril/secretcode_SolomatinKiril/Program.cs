@@ -13,6 +13,10 @@ namespace secretcode_SolomatinKiril
     {
         static void Main(string[] args)
         {
+            Menu();
+        }
+        static void Menu()
+        {
             //Menu
             Console.Title = "Solomatin Kiril, \"SecretCode\"";
             string Square = "■";
@@ -130,8 +134,6 @@ namespace secretcode_SolomatinKiril
                     Console.WriteLine("Choix invalide. Essaie encore.");
                 }
             }
-
-
         }
         static void Debutant()
         {
@@ -140,6 +142,77 @@ namespace secretcode_SolomatinKiril
 
         static void Intermediate()
         {
+            List<int> hiddenNumberList = new List<int>();
+            List<int> userNumberList = new List<int>();
+            Random random = new Random();
+            bool validInput = false;
+            bool thereIsNotDouble = true;
+            int userNumber;
+
+            int numberOfAttempts = 1;
+
+            
+            while (hiddenNumberList.Count < 4)
+            {
+                int number = random.Next(1, 6);
+                if (!(hiddenNumberList.Contains(number)))
+                {
+                    hiddenNumberList.Add(number);
+                }
+                
+            }
+            foreach (int number in hiddenNumberList)
+            {
+                Console.Write(number);
+            }
+
+            Console.WriteLine("=== SECRET CODE Niveau 2 ===\n");
+            Console.WriteLine("Essais : \n\n");
+
+            while(numberOfAttempts < 11)
+            {
+                Console.WriteLine("Essai {0}/10 : ", numberOfAttempts);
+                Console.Write("Entre 4 chiffres entre 1 et 6 (ex: 1234) : ");
+                validInput = int.TryParse(Console.ReadLine(), out userNumber);
+
+                foreach (char n in Convert.ToString(userNumber))
+                {
+                    userNumberList.Add(n);  
+                }
+
+                if (userNumberList.Count == 4)
+                {
+                    for (int i = 0; i < userNumberList.Count-1; i++)
+                    {
+                        for(int j = 0; j < userNumberList.Count-1; j++)
+                        {
+                            if(userNumberList[i] == userNumberList[j])
+                            {
+                                thereIsNotDouble = false;
+                                break;
+                            }
+                            else
+                            {
+                                thereIsNotDouble |= true;
+                            }
+                        }
+                    }
+                }
+
+                if (thereIsNotDouble)
+                {
+                    Console.WriteLine("xxx");
+                    numberOfAttempts++;
+                }
+
+                else if (!thereIsNotDouble)
+                {
+                    Console.WriteLine("Pas de doublons autorisés à ce niveau.");
+                }
+                    
+            }
+            
+
             Console.ReadLine();
         }
 
@@ -168,7 +241,7 @@ namespace secretcode_SolomatinKiril
             int userNumber;
             bool validInput = false;
             bool numberGuessed = false;
-            int numberOfAttempts = 1;
+            int numberOfAttempts = 10;
             int correctPlace = 0;
             int correctNumber = 0;
 
@@ -186,16 +259,15 @@ namespace secretcode_SolomatinKiril
                 Console.Write("Ente 4 chiffres entre 1 et 9 (ex: 1234) :");
                 validInput = int.TryParse(Console.ReadLine(), out userNumber);
 
-                if (validInput)
+                foreach (char number in Convert.ToString(userNumber))
                 {
-                    foreach (char number in Convert.ToString(userNumber))
-                    {
-                        userListNumber.Add(int.Parse(number.ToString()));
-                    }
+                    userListNumber.Add(int.Parse(number.ToString()));
+                }
 
-                    List<int>findNumbers = new List<int>();
-                    
+                List<int> findNumbers = new List<int>();
 
+                if (validInput && userListNumber.Count == 4)
+                { 
                     if (userListNumber.SequenceEqual(hiddenNumber))
                     {
                         Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
@@ -234,9 +306,18 @@ namespace secretcode_SolomatinKiril
                     findNumbers.Clear();
                 }
 
+                else if (!(userListNumber.Count == 4))
+                {
+                    Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
+                    userListNumber.Clear();
+                    findNumbers.Clear();
+                }
+
                 else
                 {
                     Console.WriteLine("Tu n'as pas entré un nombre! essaie de nouveau");
+                    userListNumber.Clear();
+                    findNumbers.Clear();
                 }
             }
             Console.WriteLine();
@@ -244,6 +325,7 @@ namespace secretcode_SolomatinKiril
             {
                 Console.ForegroundColor= ConsoleColor.Red;
                 Console.Write("Perdu ! Le code était : ");
+                Console.ResetColor();
                 foreach (int number in hiddenNumber)
                 {
                     Console.Write(number);
@@ -251,10 +333,42 @@ namespace secretcode_SolomatinKiril
                 }
                 Console.ResetColor();
                 Console.WriteLine();
-                Console.WriteLine("Veux-tu recommencer ? (o / n):");
+
                 
+
+                ConsoleKeyInfo chose = new ConsoleKeyInfo();
+                bool validKey = false;
+
+                while (!validKey)
+                {
+                    Console.WriteLine("Veux-tu recommencer ? (o / n):");
+                    chose = Console.ReadKey();
+                    if (chose.Key == ConsoleKey.O || chose.Key == ConsoleKey.N)
+                    {
+                        validKey = true;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Choix invalide. Saisi 'o' pour recommencer ou 'n' pour quitter.");
+                    }
+                    chose = new ConsoleKeyInfo();
+                }
+
+                if (chose.Key == ConsoleKey.O)
+                {
+                    Menu();
+                }
+
+                else if (chose.Key == ConsoleKey.N)
+                {
+                    Environment.Exit(0);
+                }
+                
+                
+                }
             }
         }
     }
-}
+
 
