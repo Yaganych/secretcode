@@ -137,6 +137,165 @@ namespace secretcode_SolomatinKiril
         }
         static void Debutant()
         {
+            List<int> hiddenNumberList = new List<int>();
+            List<int> userNumberList = new List<int>();
+            Random random = new Random();
+            bool validInput = false;
+            bool thereIsNotDouble = true;
+            int userNumber;
+            
+            int numberOfAttempts = 1;
+
+
+            while (hiddenNumberList.Count < 4)
+            {
+                int number = random.Next(1, 6);
+                if (!(hiddenNumberList.Contains(number)))
+                {
+                    hiddenNumberList.Add(number);
+                }
+            }
+
+            foreach (int number in hiddenNumberList)
+            {
+                Console.Write(number);
+            }
+
+            Console.WriteLine("=== SECRET CODE Niveau 1 ===\n");
+            Console.WriteLine("Essais : \n\n");
+
+            while (numberOfAttempts <= 10)
+            {
+                Console.WriteLine("Essai {0}/10 : ", numberOfAttempts);
+                Console.Write("Entre 4 chiffres entre 1 et 6 (ex: 1234) : ");
+                validInput = int.TryParse(Console.ReadLine(), out userNumber);
+
+                foreach (char number in Convert.ToString(userNumber))
+                {
+                    userNumberList.Add(int.Parse(number.ToString()));
+                }
+
+                if ((userNumberList.Count == 4) && validInput)
+                {
+                    for (int i = 0; i < userNumberList.Count - 1; i++)
+                    {
+
+                        for (int j = i + 1; j < userNumberList.Count; j++)
+                        {
+
+                            if (userNumberList[i] == userNumberList[j])
+                            {
+                                thereIsNotDouble = false;
+                                break;
+                            }
+                            else
+                            {
+                                thereIsNotDouble = true;
+                            }
+                        }
+                        if (!thereIsNotDouble)
+                            break;
+                    }
+                }
+
+                if (userNumberList.Count != 4 || !validInput)
+                    Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
+
+                if (thereIsNotDouble && validInput && hiddenNumberList.SequenceEqual(userNumberList))
+                {
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
+                    Console.ResetColor();
+                    break;
+                }
+
+                else if (!thereIsNotDouble)
+                {
+                    Console.WriteLine("Pas de doublons autorisés à ce niveau.");
+                }
+
+                if (thereIsNotDouble && validInput && !(hiddenNumberList.SequenceEqual(userNumberList)) && userNumberList.Count == 4)
+                {
+                    Console.CursorLeft = 1;
+                    Console.Write("{0}: ", numberOfAttempts);
+                    foreach (int n in userNumberList)
+                    {
+                        Console.Write(n);
+                    }
+                    Console.WriteLine();
+                    Console.CursorLeft = 4;
+                    for (int i = 0; i < hiddenNumberList.Count; i++)
+                    {
+                        if (userNumberList[i].Equals(hiddenNumberList[i]))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write("■");
+                            Console.ResetColor();
+                        }
+
+                        else if (hiddenNumberList.Contains(userNumberList[i]))
+                        {
+                            Console.ForegroundColor= ConsoleColor.Green;
+                            Console.Write("■");
+                            Console.ResetColor();
+                        }
+
+                        else
+                        {
+                            Console.Write("■");
+                        }
+                    }
+                    Console.WriteLine();
+                    numberOfAttempts++;
+                }
+
+                userNumberList.Clear();
+            }
+
+            Console.WriteLine();
+
+            if (numberOfAttempts > 10)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Perdu ! Le code était : ");
+                Console.ResetColor();
+                foreach (int number in hiddenNumberList)
+                {
+                    Console.Write(number);
+                }
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+
+            ConsoleKeyInfo chose = new ConsoleKeyInfo();
+            bool validKey = false;
+
+            while (!validKey)
+            {
+                Console.WriteLine("Veux-tu recommencer ? (o / n):");
+                chose = Console.ReadKey();
+                if (chose.Key == ConsoleKey.O || chose.Key == ConsoleKey.N)
+                {
+                    validKey = true;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Choix invalide. Saisi 'o' pour recommencer ou 'n' pour quitter.");
+                }
+                chose = new ConsoleKeyInfo();
+            }
+
+            if (chose.Key == ConsoleKey.O)
+            {
+                Menu();
+            }
+
+            else if (chose.Key == ConsoleKey.N)
+            {
+                Environment.Exit(0);
+            }
             Console.ReadLine();
         }
 
@@ -151,7 +310,7 @@ namespace secretcode_SolomatinKiril
             int correctPlace = 0;
             int correctNumber = 0;
 
-            int numberOfAttempts = 10;
+            int numberOfAttempts = 1;
 
 
             while (hiddenNumberList.Count < 4)
@@ -208,9 +367,21 @@ namespace secretcode_SolomatinKiril
                 if (userNumberList.Count != 4 || !validInput)
                     Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
 
+                if (thereIsNotDouble && validInput && hiddenNumberList.SequenceEqual(userNumberList))
+                {
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
+                    Console.ResetColor();
+                    break;
+                }
 
-
-                if (thereIsNotDouble && validInput && !(hiddenNumberList.SequenceEqual(userNumberList)))
+                else if (!thereIsNotDouble)
+                {
+                    Console.WriteLine("Pas de doublons autorisés à ce niveau.");
+                }
+                
+                if (thereIsNotDouble && validInput && !(hiddenNumberList.SequenceEqual(userNumberList)) && userNumberList.Count == 4)
                 {
                     correctNumber = 0;
                     correctPlace = 0;
@@ -237,17 +408,6 @@ namespace secretcode_SolomatinKiril
                     Console.WriteLine("{0} bien placé(s), {1} mal placé(s) \n", correctPlace, correctNumber);
                     Console.ResetColor();
                     numberOfAttempts++;
-                }
-
-                if (thereIsNotDouble && validInput && hiddenNumberList.SequenceEqual(userNumberList))
-                {
-                    Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
-                    break;
-                }
-
-                else if (!thereIsNotDouble)
-                {
-                    Console.WriteLine("Pas de doublons autorisés à ce niveau.");
                 }
                 userNumberList.Clear();
             }
@@ -300,6 +460,159 @@ namespace secretcode_SolomatinKiril
 
         static void Advanced()
         {
+            List<int> hiddenNumberList = new List<int>();
+            List<int> userNumberList = new List<int>();    
+            Random random = new Random();
+            bool validInput = false;
+            int userNumber;
+
+            int numberOfAttempts = 1;
+
+
+            while (hiddenNumberList.Count < 4)
+            {
+                int number = random.Next(1, 9);
+                hiddenNumberList.Add(number);
+            }
+
+            Console.WriteLine("=== SECRET CODE Niveau 1 ===\n");
+            Console.WriteLine("Essais : \n\n");
+
+            while (numberOfAttempts <= 10)
+            {
+                List<int?> colorValue = new List<int?>() { null, null, null, null };
+                List<int> notFoundsNumbers = new List<int>(hiddenNumberList);
+                foreach (int number in hiddenNumberList)
+                {
+                    Console.Write(number);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine();
+                Console.WriteLine("Essai {0}/10 : ", numberOfAttempts);
+                Console.Write("Entre 4 chiffres entre 1 et 9 (ex: 1234) : ");
+                validInput = int.TryParse(Console.ReadLine(), out userNumber);
+
+                foreach (char number in Convert.ToString(userNumber))
+                {
+                    userNumberList.Add(int.Parse(number.ToString()));
+                }
+
+                if (userNumberList.Count != 4 || !validInput)
+                    Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
+
+                if (validInput && hiddenNumberList.SequenceEqual(userNumberList))
+                {
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
+                    Console.ResetColor();
+                    break;
+                }
+
+                if (validInput && !(hiddenNumberList.SequenceEqual(userNumberList)) && userNumberList.Count == 4)
+                {
+                    Console.CursorLeft = 1;
+                    Console.Write("{0}: ", numberOfAttempts);
+                    foreach (int n in userNumberList)
+                    {
+                        Console.Write(n);
+                    }
+                    Console.WriteLine();
+                    Console.CursorLeft = 4;
+
+                    for (int i = 0; i < hiddenNumberList.Count; i++)
+                    {
+                        if (userNumberList[i].Equals(hiddenNumberList[i]))
+                        {
+                            colorValue[i] = 2;
+                            notFoundsNumbers.Remove(hiddenNumberList[i]);
+                        }
+                    }
+
+                    for (int j = 0; j < hiddenNumberList.Count; j++)
+                    {
+                        if (notFoundsNumbers.Contains(userNumberList[j]) && colorValue[j] != 2)
+                        {
+                            colorValue[j] = 1;
+                            notFoundsNumbers.Remove(userNumberList[j]);
+                        }
+                        else if (colorValue[j] != 2)
+                        {
+                            colorValue[j] = 0; 
+                        }
+                    }
+
+                    for (int i = 0; i < hiddenNumberList.Count; i++)
+                    {
+                        if (colorValue[i] == 2)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write("■");
+                            Console.ResetColor();
+                        }
+                        else if (colorValue[i] == 1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("■");
+                            Console.ResetColor();
+                        }
+                        else if (colorValue[i] == 0)
+                        {
+                            Console.Write("■");
+                        }
+                    }
+                    Console.WriteLine();
+                    numberOfAttempts++;
+                }
+
+                userNumberList.Clear();
+            }
+
+            Console.WriteLine();
+
+            if (numberOfAttempts > 10)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Perdu ! Le code était : ");
+                Console.ResetColor();
+                foreach (int number in hiddenNumberList)
+                {
+                    Console.Write(number);
+                }
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+
+            ConsoleKeyInfo chose = new ConsoleKeyInfo();
+            bool validKey = false;
+
+            while (!validKey)
+            {
+                Console.WriteLine("Veux-tu recommencer ? (o / n):");
+                chose = Console.ReadKey();
+                if (chose.Key == ConsoleKey.O || chose.Key == ConsoleKey.N)
+                {
+                    validKey = true;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Choix invalide. Saisi 'o' pour recommencer ou 'n' pour quitter.");
+                }
+                chose = new ConsoleKeyInfo();
+            }
+
+            if (chose.Key == ConsoleKey.O)
+            {
+                Menu();
+            }
+
+            else if (chose.Key == ConsoleKey.N)
+            {
+                Environment.Exit(0);
+            }
+            Console.ReadLine();
             Console.ReadLine();
         }
 
@@ -448,7 +761,14 @@ namespace secretcode_SolomatinKiril
 
 
         }
+
+        static void endGame()
+        {
+
+        }
     }
+
+    
 }
 
 
