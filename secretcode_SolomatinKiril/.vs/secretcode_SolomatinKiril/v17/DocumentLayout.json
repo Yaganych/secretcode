@@ -1,10 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\I319\\Soutien\\secretcode\\secretcode\\secretcode_SolomatinKiril\\",
+  "WorkspaceRootPath": "H:\\I319\\Soutien\\secretcode PC\\secretcode\\secretcode_SolomatinKiril\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E555EDCB-7D19-4168-AB49-FDC3D3EBE43A}|secretcode_SolomatinKiril\\secretcode_SolomatinKiril.csproj|d:\\i319\\soutien\\secretcode\\secretcode\\secretcode_solomatinkiril\\secretcode_solomatinkiril\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E555EDCB-7D19-4168-AB49-FDC3D3EBE43A}|secretcode_SolomatinKiril\\secretcode_SolomatinKiril.csproj|h:\\i319\\soutien\\secretcode pc\\secretcode\\secretcode_solomatinkiril\\secretcode_solomatinkiril\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E555EDCB-7D19-4168-AB49-FDC3D3EBE43A}|secretcode_SolomatinKiril\\secretcode_SolomatinKiril.csproj|solutionrelative:secretcode_solomatinkiril\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pa22yog\\Downloads\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +17,51 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "D:\\I319\\Soutien\\secretcode\\secretcode\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\Program.cs",
+              "DocumentMoniker": "H:\\I319\\Soutien\\secretcode PC\\secretcode\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\Program.cs",
               "RelativeDocumentMoniker": "secretcode_SolomatinKiril\\Program.cs",
-              "ToolTip": "D:\\I319\\Soutien\\secretcode\\secretcode\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\Program.cs",
+              "ToolTip": "H:\\I319\\Soutien\\secretcode PC\\secretcode\\secretcode_SolomatinKiril\\secretcode_SolomatinKiril\\Program.cs",
               "RelativeToolTip": "secretcode_SolomatinKiril\\Program.cs",
-              "ViewState": "AgIAAN8CAAAAAAAAAAAmwPQCAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-29T12:40:43.967Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "FloatingWindowState": {
+        "Id": "b4f32e6c-bf13-4d27-92dc-45090fc5d7b3",
+        "Display": 0,
+        "X": 183,
+        "Y": 133,
+        "Width": 1578,
+        "Height": 786,
+        "WindowState": 0
+      },
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\pa22yog\\Downloads\\Program.cs",
+              "ToolTip": "C:\\Users\\pa22yog\\Downloads\\Program.cs",
+              "ViewState": "AgIAAF8CAAAAAAAAAAAAAIoCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T13:40:10.187Z",
               "EditorCaption": ""
             }
           ]

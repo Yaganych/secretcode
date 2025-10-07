@@ -143,7 +143,7 @@ namespace secretcode_SolomatinKiril
             bool validInput = false;
             bool thereIsNotDouble = true;
             int userNumber;
-            
+
             int numberOfAttempts = 1;
 
 
@@ -236,7 +236,7 @@ namespace secretcode_SolomatinKiril
 
                         else if (hiddenNumberList.Contains(userNumberList[i]))
                         {
-                            Console.ForegroundColor= ConsoleColor.Green;
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.Write("■");
                             Console.ResetColor();
                         }
@@ -255,48 +255,7 @@ namespace secretcode_SolomatinKiril
 
             Console.WriteLine();
 
-            if (numberOfAttempts > 10)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("Perdu ! Le code était : ");
-                Console.ResetColor();
-                foreach (int number in hiddenNumberList)
-                {
-                    Console.Write(number);
-                }
-                Console.ResetColor();
-                Console.WriteLine();
-            }
-
-            ConsoleKeyInfo chose = new ConsoleKeyInfo();
-            bool validKey = false;
-
-            while (!validKey)
-            {
-                Console.WriteLine("Veux-tu recommencer ? (o / n):");
-                chose = Console.ReadKey();
-                if (chose.Key == ConsoleKey.O || chose.Key == ConsoleKey.N)
-                {
-                    validKey = true;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Choix invalide. Saisi 'o' pour recommencer ou 'n' pour quitter.");
-                }
-                chose = new ConsoleKeyInfo();
-            }
-
-            if (chose.Key == ConsoleKey.O)
-            {
-                Menu();
-            }
-
-            else if (chose.Key == ConsoleKey.N)
-            {
-                Environment.Exit(0);
-            }
-            Console.ReadLine();
+            endGame(numberOfAttempts, hiddenNumberList);
         }
 
         static void Intermediate()
@@ -304,7 +263,7 @@ namespace secretcode_SolomatinKiril
             List<int> hiddenNumberList = new List<int>();
             List<int> userNumberList = new List<int>();
             Random random = new Random();
-            bool validInput = false;     
+            bool validInput = false;
             bool thereIsNotDouble = true;
             int userNumber;
             int correctPlace = 0;
@@ -380,7 +339,7 @@ namespace secretcode_SolomatinKiril
                 {
                     Console.WriteLine("Pas de doublons autorisés à ce niveau.");
                 }
-                
+
                 if (thereIsNotDouble && validInput && !(hiddenNumberList.SequenceEqual(userNumberList)) && userNumberList.Count == 4)
                 {
                     correctNumber = 0;
@@ -414,59 +373,18 @@ namespace secretcode_SolomatinKiril
 
             Console.WriteLine();
 
-            if (numberOfAttempts > 10)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("Perdu ! Le code était : ");
-                Console.ResetColor();
-                foreach (int number in hiddenNumberList)
-                {
-                    Console.Write(number);
-                }
-                Console.ResetColor();
-                Console.WriteLine();
-            }
-
-            ConsoleKeyInfo chose = new ConsoleKeyInfo();
-            bool validKey = false;
-
-            while (!validKey)
-            {
-                Console.WriteLine("Veux-tu recommencer ? (o / n):");
-                chose = Console.ReadKey();
-                if (chose.Key == ConsoleKey.O || chose.Key == ConsoleKey.N)
-                {
-                    validKey = true;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Choix invalide. Saisi 'o' pour recommencer ou 'n' pour quitter.");
-                }
-                chose = new ConsoleKeyInfo();
-            }
-
-            if (chose.Key == ConsoleKey.O)
-            {
-                Menu();
-            }
-
-            else if (chose.Key == ConsoleKey.N)
-            {
-                Environment.Exit(0);
-            }
-            Console.ReadLine();
+            endGame(numberOfAttempts, hiddenNumberList);
         }
 
         static void Advanced()
         {
             List<int> hiddenNumberList = new List<int>();
-            List<int> userNumberList = new List<int>();    
+            List<int> userNumberList = new List<int>();
             Random random = new Random();
             bool validInput = false;
             int userNumber;
 
-            int numberOfAttempts = 1;
+            int numberOfAttempts = 10;
 
 
             while (hiddenNumberList.Count < 4)
@@ -539,7 +457,7 @@ namespace secretcode_SolomatinKiril
                         }
                         else if (colorValue[j] != 2)
                         {
-                            colorValue[j] = 0; 
+                            colorValue[j] = 0;
                         }
                     }
 
@@ -571,49 +489,7 @@ namespace secretcode_SolomatinKiril
 
             Console.WriteLine();
 
-            if (numberOfAttempts > 10)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("Perdu ! Le code était : ");
-                Console.ResetColor();
-                foreach (int number in hiddenNumberList)
-                {
-                    Console.Write(number);
-                }
-                Console.ResetColor();
-                Console.WriteLine();
-            }
-
-            ConsoleKeyInfo chose = new ConsoleKeyInfo();
-            bool validKey = false;
-
-            while (!validKey)
-            {
-                Console.WriteLine("Veux-tu recommencer ? (o / n):");
-                chose = Console.ReadKey();
-                if (chose.Key == ConsoleKey.O || chose.Key == ConsoleKey.N)
-                {
-                    validKey = true;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Choix invalide. Saisi 'o' pour recommencer ou 'n' pour quitter.");
-                }
-                chose = new ConsoleKeyInfo();
-            }
-
-            if (chose.Key == ConsoleKey.O)
-            {
-                Menu();
-            }
-
-            else if (chose.Key == ConsoleKey.N)
-            {
-                Environment.Exit(0);
-            }
-            Console.ReadLine();
-            Console.ReadLine();
+            endGame(numberOfAttempts, hiddenNumberList);
         }
 
         static void Expert()
@@ -636,7 +512,7 @@ namespace secretcode_SolomatinKiril
             int userNumber;
             bool validInput = false;
             bool numberGuessed = false;
-            int numberOfAttempts = 1;
+            int numberOfAttempts = 10;
             int correctPlace = 0;
             int correctNumber = 0;
 
@@ -717,6 +593,13 @@ namespace secretcode_SolomatinKiril
             }
             Console.WriteLine();
 
+            endGame(numberOfAttempts, hiddenNumber);
+
+
+        }
+
+        static void endGame(int numberOfAttempts, List<int> hiddenNumber)
+        {
             if (numberOfAttempts > 10)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -758,17 +641,10 @@ namespace secretcode_SolomatinKiril
             {
                 Environment.Exit(0);
             }
-
-
-        }
-
-        static void endGame()
-        {
-
         }
     }
 
-    
+
 }
 
 
