@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Net;
 using System.Reflection.Emit;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace secretcode_SolomatinKiril
             Console.WriteLine();
 
             Console.WriteLine("Un code secret composé de 4 chiffres est généré.\nÀ toi de le découvrir en 10 essais maximum !");
-            Console.WriteLine();
+            Console.WriteLine(); 
 
             Console.WriteLine("À chaque essai, tu reçois un indice selon le niveau choisi.");
             Console.WriteLine();
@@ -91,7 +92,7 @@ namespace secretcode_SolomatinKiril
             Console.WriteLine("4. Expert         (1 à 9, avec doublons, indices discrets)");
             Console.WriteLine();
 
-            Console.WriteLine("Votre choix (1-4) :");
+            Console.Write("Votre choix (1-4) :");
 
             while (!valueOk || levelNumber < 1 || levelNumber > 4)
             {
@@ -139,22 +140,13 @@ namespace secretcode_SolomatinKiril
         {
             List<int> hiddenNumberList = new List<int>();
             List<int> userNumberList = new List<int>();
-            Random random = new Random();
             bool validInput = false;
             bool thereIsNotDouble = true;
             int userNumber;
 
             int numberOfAttempts = 1;
 
-
-            while (hiddenNumberList.Count < 4)
-            {
-                int number = random.Next(1, 6);
-                if (!(hiddenNumberList.Contains(number)))
-                {
-                    hiddenNumberList.Add(number);
-                }
-            }
+            RandomNumberGenerator(hiddenNumberList, 6, false);
 
             foreach (int number in hiddenNumberList)
             {
@@ -262,7 +254,6 @@ namespace secretcode_SolomatinKiril
         {
             List<int> hiddenNumberList = new List<int>();
             List<int> userNumberList = new List<int>();
-            Random random = new Random();
             bool validInput = false;
             bool thereIsNotDouble = true;
             int userNumber;
@@ -271,16 +262,8 @@ namespace secretcode_SolomatinKiril
 
             int numberOfAttempts = 1;
 
+            RandomNumberGenerator (hiddenNumberList, 6, false);
 
-            while (hiddenNumberList.Count < 4)
-            {
-                int number = random.Next(1, 6);
-                if (!(hiddenNumberList.Contains(number)))
-                {
-                    hiddenNumberList.Add(number);
-                }
-
-            }
             foreach (int number in hiddenNumberList)
             {
                 Console.Write(number);
@@ -380,20 +363,19 @@ namespace secretcode_SolomatinKiril
         {
             List<int> hiddenNumberList = new List<int>();
             List<int> userNumberList = new List<int>();
-            Random random = new Random();
             bool validInput = false;
             int userNumber;
 
-            int numberOfAttempts = 10;
+            int numberOfAttempts = 1;
 
+            RandomNumberGenerator(hiddenNumberList, 8, true);
 
-            while (hiddenNumberList.Count < 4)
+            foreach (int n in hiddenNumberList)
             {
-                int number = random.Next(1, 9);
-                hiddenNumberList.Add(number);
+                Console.Write(n);
             }
 
-            Console.WriteLine("=== SECRET CODE Niveau 1 ===\n");
+            Console.WriteLine("=== SECRET CODE Niveau 3 ===\n");
             Console.WriteLine("Essais : \n\n");
 
             while (numberOfAttempts <= 10)
@@ -495,28 +477,20 @@ namespace secretcode_SolomatinKiril
         static void Expert()
         {
             Console.Title = "Expert";
-            Random random = new Random();
 
             List<int> userListNumber = new List<int>();
-            List<int> hiddenNumber = new List<int>();
+            List<int> hiddenNumberList = new List<int>();
 
-            int firstNumber = random.Next(1, 10);
-            hiddenNumber.Add(firstNumber);
-            int secondeNumber = random.Next(1, 10);
-            hiddenNumber.Add(secondeNumber);
-            int thirdNumber = random.Next(1, 10);
-            hiddenNumber.Add(thirdNumber);
-            int fourdNumber = random.Next(1, 10);
-            hiddenNumber.Add(fourdNumber);
+            RandomNumberGenerator(hiddenNumberList, 9, true);
 
             int userNumber;
             bool validInput = false;
             bool numberGuessed = false;
-            int numberOfAttempts = 10;
+            int numberOfAttempts = 1;
             int correctPlace = 0;
             int correctNumber = 0;
 
-            foreach (int number in hiddenNumber)
+            foreach (int number in hiddenNumberList)
             {
                 Console.Write(number);
             }
@@ -539,7 +513,7 @@ namespace secretcode_SolomatinKiril
 
                 if (validInput && userListNumber.Count == 4)
                 {
-                    if (userListNumber.SequenceEqual(hiddenNumber))
+                    if (userListNumber.SequenceEqual(hiddenNumberList))
                     {
                         Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
                         numberGuessed = true;
@@ -547,18 +521,18 @@ namespace secretcode_SolomatinKiril
 
                     else
                     {
-                        for (int i = 0; i < hiddenNumber.Count; i++)
+                        for (int i = 0; i < hiddenNumberList.Count; i++)
                         {
-                            if (hiddenNumber[i] == userListNumber[i])
+                            if (hiddenNumberList[i] == userListNumber[i])
                             {
                                 correctPlace++;
                                 findNumbers.Add(userListNumber[i]);
                             }
                         }
 
-                        for (int j = 0; j < hiddenNumber.Count; j++)
+                        for (int j = 0; j < hiddenNumberList.Count; j++)
                         {
-                            if (hiddenNumber.Contains(userListNumber[j]) && !findNumbers.Contains(userListNumber[j]))
+                            if (hiddenNumberList.Contains(userListNumber[j]) && !findNumbers.Contains(userListNumber[j]))
                             {
                                 correctNumber++;
                             }
@@ -593,7 +567,7 @@ namespace secretcode_SolomatinKiril
             }
             Console.WriteLine();
 
-            endGame(numberOfAttempts, hiddenNumber);
+            endGame(numberOfAttempts, hiddenNumberList);
 
 
         }
@@ -640,6 +614,26 @@ namespace secretcode_SolomatinKiril
             else if (chose.Key == ConsoleKey.N)
             {
                 Environment.Exit(0);
+            }
+        }
+
+        static void RandomNumberGenerator (List<int> hiddenNumberList, int maxValue, bool allowDuplicates)
+        {
+            Random random = new Random();
+            while (hiddenNumberList.Count < 4)
+            {
+                int number = random.Next(1, maxValue + 1);
+                if (!allowDuplicates)
+                {
+                    if (!(hiddenNumberList.Contains(number)))
+                    {
+                        hiddenNumberList.Add(number);
+                    }
+                }
+                else
+                {
+                    hiddenNumberList.Add(number);
+                }
             }
         }
     }
