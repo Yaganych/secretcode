@@ -30,7 +30,7 @@ namespace secretcode_SolomatinKiril
             Console.WriteLine();
 
             Console.WriteLine("Un code secret composé de 4 chiffres est généré.\nÀ toi de le découvrir en 10 essais maximum !");
-            Console.WriteLine(); 
+            Console.WriteLine();
 
             Console.WriteLine("À chaque essai, tu reçois un indice selon le niveau choisi.");
             Console.WriteLine();
@@ -160,12 +160,16 @@ namespace secretcode_SolomatinKiril
             {
                 Console.WriteLine("Essai {0}/10 : ", numberOfAttempts);
                 Console.Write("Entre 4 chiffres entre 1 et 6 (ex: 1234) : ");
+
                 validInput = int.TryParse(Console.ReadLine(), out userNumber);
 
                 foreach (char number in Convert.ToString(userNumber))
                 {
                     userNumberList.Add(int.Parse(number.ToString()));
                 }
+
+                if (userNumberList.Count != 4 || !validInput)
+                    Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
 
                 if ((userNumberList.Count == 4) && validInput)
                 {
@@ -189,9 +193,6 @@ namespace secretcode_SolomatinKiril
                             break;
                     }
                 }
-
-                if (userNumberList.Count != 4 || !validInput)
-                    Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
 
                 if (thereIsNotDouble && validInput && hiddenNumberList.SequenceEqual(userNumberList))
                 {
@@ -262,7 +263,7 @@ namespace secretcode_SolomatinKiril
 
             int numberOfAttempts = 1;
 
-            RandomNumberGenerator (hiddenNumberList, 6, false);
+            RandomNumberGenerator(hiddenNumberList, 6, false);
 
             foreach (int number in hiddenNumberList)
             {
@@ -478,7 +479,7 @@ namespace secretcode_SolomatinKiril
         {
             Console.Title = "Expert";
 
-            List<int> userListNumber = new List<int>();
+            List<int> userNumberList = new List<int>();
             List<int> hiddenNumberList = new List<int>();
 
             RandomNumberGenerator(hiddenNumberList, 9, true);
@@ -506,14 +507,14 @@ namespace secretcode_SolomatinKiril
 
                 foreach (char number in Convert.ToString(userNumber))
                 {
-                    userListNumber.Add(int.Parse(number.ToString()));
+                    userNumberList.Add(int.Parse(number.ToString()));
                 }
 
-                List<int> findNumbers = new List<int>();
+                List<int> notFoundsNumbers = new List<int>(hiddenNumberList);
 
-                if (validInput && userListNumber.Count == 4)
+                if (validInput && userNumberList.Count == 4)
                 {
-                    if (userListNumber.SequenceEqual(hiddenNumberList))
+                    if (userNumberList.SequenceEqual(hiddenNumberList))
                     {
                         Console.WriteLine("Félicitations, le nombre " + userNumber + " est un numéro secret");
                         numberGuessed = true;
@@ -523,16 +524,16 @@ namespace secretcode_SolomatinKiril
                     {
                         for (int i = 0; i < hiddenNumberList.Count; i++)
                         {
-                            if (hiddenNumberList[i] == userListNumber[i])
+                            if (hiddenNumberList[i].Equals(userNumberList[i]))
                             {
                                 correctPlace++;
-                                findNumbers.Add(userListNumber[i]);
+                                notFoundsNumbers.Remove(hiddenNumberList[i]);
                             }
                         }
 
                         for (int j = 0; j < hiddenNumberList.Count; j++)
                         {
-                            if (hiddenNumberList.Contains(userListNumber[j]) && !findNumbers.Contains(userListNumber[j]))
+                            if (notFoundsNumbers.Contains(userNumberList[j]) && !hiddenNumberList[j].Equals(userNumberList[j]))
                             {
                                 correctNumber++;
                             }
@@ -547,22 +548,19 @@ namespace secretcode_SolomatinKiril
                     }
 
                     numberOfAttempts++;
-                    userListNumber.Clear();
-                    findNumbers.Clear();
+                    userNumberList.Clear();
                 }
 
-                else if (!(userListNumber.Count == 4))
+                else if (userNumberList.Count != 4)
                 {
                     Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
-                    userListNumber.Clear();
-                    findNumbers.Clear();
+                    userNumberList.Clear();
                 }
 
                 else
                 {
                     Console.WriteLine("Tu n'as pas entré un nombre! essaie de nouveau");
-                    userListNumber.Clear();
-                    findNumbers.Clear();
+                    userNumberList.Clear();
                 }
             }
             Console.WriteLine();
@@ -617,7 +615,7 @@ namespace secretcode_SolomatinKiril
             }
         }
 
-        static void RandomNumberGenerator (List<int> hiddenNumberList, int maxValue, bool allowDuplicates)
+        static void RandomNumberGenerator(List<int> hiddenNumberList, int maxValue, bool allowDuplicates)
         {
             Random random = new Random();
             while (hiddenNumberList.Count < 4)
@@ -636,7 +634,24 @@ namespace secretcode_SolomatinKiril
                 }
             }
         }
+
+        static void UserInputIsValid(bool validInput, int userNumber, List<int> userNumberList)
+        {
+            validInput = int.TryParse(Console.ReadLine(), out userNumber);
+
+            foreach (char number in Convert.ToString(userNumber))
+            {
+                userNumberList.Add(int.Parse(number.ToString()));
+            }
+
+            if (!validInput)
+                Console.WriteLine("Tu n'as pas entré un nombre! Essaie de nouveau");
+
+            if (userNumberList.Count != 4 || validInput)
+                Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
+        }
     }
+
 
 
 }
