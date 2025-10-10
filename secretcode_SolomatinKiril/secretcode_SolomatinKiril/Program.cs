@@ -19,7 +19,7 @@ namespace secretcode_SolomatinKiril
         static void Menu()
         {
             //Menu
-            Console.Title = "Solomatin Kiril, \"SecretCode\"";
+            Console.Title = "Solomatin Kiril, \"SecretCode\" I319";
             string Square = "■";
 
             Console.WriteLine("╔══════════════════Kiril Solomatin══════════════════╗");
@@ -78,10 +78,12 @@ namespace secretcode_SolomatinKiril
 
             Console.ReadKey();
             Console.Clear();
-            //level selection
-            bool valueOk = false;
-            int levelNumber = 0;
+            Rules();
+        }
 
+        //Affichage des niveaux et des régles
+        static void Rules()
+        {  
             Console.WriteLine("=== SECRET CODE ===");
             Console.WriteLine();
 
@@ -91,9 +93,15 @@ namespace secretcode_SolomatinKiril
             Console.WriteLine("3. Avancé         (1 à 8, avec doublons, indices visibles)");
             Console.WriteLine("4. Expert         (1 à 9, avec doublons, indices discrets)");
             Console.WriteLine();
+            LevelSelection();
+        }
 
-            Console.Write("Votre choix (1-4) :");
-
+        //Sélection d'un niveau 
+        static void LevelSelection()
+        {
+            bool valueOk = false;
+            int levelNumber = 0;
+            Console.Write("Votre choix (1-4) : ");
             while (!valueOk || levelNumber < 1 || levelNumber > 4)
             {
                 valueOk = int.TryParse(Console.ReadLine(), out levelNumber);
@@ -136,15 +144,20 @@ namespace secretcode_SolomatinKiril
                 }
             }
         }
+
+        //Niveau Debutant
         static void Debutant()
         {
             List<int> hiddenNumberList = new List<int>();
             List<int> userNumberList = new List<int>();
-            bool validInput = false;
-            bool thereIsNotDouble = true;
-            int userNumber;
+            bool thereIsNotDouble = false;
+            int userNumber = 0;
 
             int numberOfAttempts = 1;
+            const int MAX_ATTEMPTS = 10;
+            const int NUMBER_LENGTH = 4;
+            const int MIN_NUMBER = 1;
+            const int MAX_NUMBER = 6;
 
             RandomNumberGenerator(hiddenNumberList, 6, false);
 
@@ -156,45 +169,20 @@ namespace secretcode_SolomatinKiril
             Console.WriteLine("=== SECRET CODE Niveau 1 ===\n");
             Console.WriteLine("Essais : \n\n");
 
-            while (numberOfAttempts <= 10)
+            while (numberOfAttempts <= MAX_ATTEMPTS)
             {
                 Console.WriteLine("Essai {0}/10 : ", numberOfAttempts);
                 Console.Write("Entre 4 chiffres entre 1 et 6 (ex: 1234) : ");
 
-                validInput = int.TryParse(Console.ReadLine(), out userNumber);
-
-                foreach (char number in Convert.ToString(userNumber))
+                if (UserInputIsValid(userNumber, userNumberList, MIN_NUMBER, MAX_NUMBER, NUMBER_LENGTH))
                 {
-                    userNumberList.Add(int.Parse(number.ToString()));
+                    ThereIsNotDouble(userNumberList, ref thereIsNotDouble);
                 }
 
-                if (userNumberList.Count != 4 || !validInput)
-                    Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
+                else
+                    thereIsNotDouble = false;
 
-                if ((userNumberList.Count == 4) && validInput)
-                {
-                    for (int i = 0; i < userNumberList.Count - 1; i++)
-                    {
-
-                        for (int j = i + 1; j < userNumberList.Count; j++)
-                        {
-
-                            if (userNumberList[i] == userNumberList[j])
-                            {
-                                thereIsNotDouble = false;
-                                break;
-                            }
-                            else
-                            {
-                                thereIsNotDouble = true;
-                            }
-                        }
-                        if (!thereIsNotDouble)
-                            break;
-                    }
-                }
-
-                if (thereIsNotDouble && validInput && hiddenNumberList.SequenceEqual(userNumberList))
+                if (thereIsNotDouble && hiddenNumberList.SequenceEqual(userNumberList))
                 {
                     Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -203,12 +191,7 @@ namespace secretcode_SolomatinKiril
                     break;
                 }
 
-                else if (!thereIsNotDouble)
-                {
-                    Console.WriteLine("Pas de doublons autorisés à ce niveau.");
-                }
-
-                if (thereIsNotDouble && validInput && !(hiddenNumberList.SequenceEqual(userNumberList)) && userNumberList.Count == 4)
+                if (thereIsNotDouble && !(hiddenNumberList.SequenceEqual(userNumberList)))
                 {
                     Console.CursorLeft = 1;
                     Console.Write("{0}: ", numberOfAttempts);
@@ -240,6 +223,7 @@ namespace secretcode_SolomatinKiril
                         }
                     }
                     Console.WriteLine();
+                    Console.WriteLine();
                     numberOfAttempts++;
                 }
 
@@ -248,22 +232,27 @@ namespace secretcode_SolomatinKiril
 
             Console.WriteLine();
 
-            endGame(numberOfAttempts, hiddenNumberList);
+            EndGame(numberOfAttempts, hiddenNumberList);
         }
 
+        //Niveau Intermediate
         static void Intermediate()
         {
             List<int> hiddenNumberList = new List<int>();
             List<int> userNumberList = new List<int>();
             bool validInput = false;
             bool thereIsNotDouble = true;
-            int userNumber;
+            int userNumber = 0;
             int correctPlace = 0;
             int correctNumber = 0;
 
             int numberOfAttempts = 1;
+            const int MAX_ATTEMPTS = 10;
+            const int NUMBER_LENGTH = 4;
+            const int MIN_NUMBER = 1;
+            const int MAX_NUMBER = 6;
 
-            RandomNumberGenerator(hiddenNumberList, 6, false);
+            RandomNumberGenerator(hiddenNumberList, MAX_NUMBER, false);
 
             foreach (int number in hiddenNumberList)
             {
@@ -273,44 +262,20 @@ namespace secretcode_SolomatinKiril
             Console.WriteLine("=== SECRET CODE Niveau 2 ===\n");
             Console.WriteLine("Essais : \n\n");
 
-            while (numberOfAttempts <= 10)
+            while (numberOfAttempts <= MAX_ATTEMPTS)
             {
                 Console.WriteLine("Essai {0}/10 : ", numberOfAttempts);
                 Console.Write("Entre 4 chiffres entre 1 et 6 (ex: 1234) : ");
-                validInput = int.TryParse(Console.ReadLine(), out userNumber);
 
-                foreach (char number in Convert.ToString(userNumber))
+                if (UserInputIsValid(userNumber, userNumberList, MIN_NUMBER, MAX_NUMBER, NUMBER_LENGTH))
                 {
-                    userNumberList.Add(int.Parse(number.ToString()));
+                    ThereIsNotDouble(userNumberList, ref thereIsNotDouble);
                 }
 
-                if ((userNumberList.Count == 4) && validInput)
-                {
-                    for (int i = 0; i < userNumberList.Count - 1; i++)
-                    {
+                else
+                    thereIsNotDouble = false;
 
-                        for (int j = i + 1; j < userNumberList.Count; j++)
-                        {
-
-                            if (userNumberList[i] == userNumberList[j])
-                            {
-                                thereIsNotDouble = false;
-                                break;
-                            }
-                            else
-                            {
-                                thereIsNotDouble = true;
-                            }
-                        }
-                        if (!thereIsNotDouble)
-                            break;
-                    }
-                }
-
-                if (userNumberList.Count != 4 || !validInput)
-                    Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
-
-                if (thereIsNotDouble && validInput && hiddenNumberList.SequenceEqual(userNumberList))
+                if (thereIsNotDouble && hiddenNumberList.SequenceEqual(userNumberList))
                 {
                     Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -319,12 +284,7 @@ namespace secretcode_SolomatinKiril
                     break;
                 }
 
-                else if (!thereIsNotDouble)
-                {
-                    Console.WriteLine("Pas de doublons autorisés à ce niveau.");
-                }
-
-                if (thereIsNotDouble && validInput && !(hiddenNumberList.SequenceEqual(userNumberList)) && userNumberList.Count == 4)
+                if (thereIsNotDouble && !(hiddenNumberList.SequenceEqual(userNumberList)))
                 {
                     correctNumber = 0;
                     correctPlace = 0;
@@ -357,9 +317,10 @@ namespace secretcode_SolomatinKiril
 
             Console.WriteLine();
 
-            endGame(numberOfAttempts, hiddenNumberList);
+            EndGame(numberOfAttempts, hiddenNumberList);
         }
 
+        //Niveau Advanced
         static void Advanced()
         {
             List<int> hiddenNumberList = new List<int>();
@@ -368,6 +329,8 @@ namespace secretcode_SolomatinKiril
             int userNumber;
 
             int numberOfAttempts = 1;
+            const int MAX_ATTEMPTS = 10;
+            const int NUMBER_LENGTH = 4;
 
             RandomNumberGenerator(hiddenNumberList, 8, true);
 
@@ -379,7 +342,7 @@ namespace secretcode_SolomatinKiril
             Console.WriteLine("=== SECRET CODE Niveau 3 ===\n");
             Console.WriteLine("Essais : \n\n");
 
-            while (numberOfAttempts <= 10)
+            while (numberOfAttempts <= MAX_ATTEMPTS)
             {
                 List<int?> colorValue = new List<int?>() { null, null, null, null };
                 List<int> notFoundsNumbers = new List<int>(hiddenNumberList);
@@ -399,7 +362,7 @@ namespace secretcode_SolomatinKiril
                     userNumberList.Add(int.Parse(number.ToString()));
                 }
 
-                if (userNumberList.Count != 4 || !validInput)
+                if (userNumberList.Count != NUMBER_LENGTH || !validInput)
                     Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
 
                 if (validInput && hiddenNumberList.SequenceEqual(userNumberList))
@@ -411,7 +374,7 @@ namespace secretcode_SolomatinKiril
                     break;
                 }
 
-                if (validInput && !(hiddenNumberList.SequenceEqual(userNumberList)) && userNumberList.Count == 4)
+                if (validInput && !(hiddenNumberList.SequenceEqual(userNumberList)) && userNumberList.Count == NUMBER_LENGTH)
                 {
                     Console.CursorLeft = 1;
                     Console.Write("{0}: ", numberOfAttempts);
@@ -472,9 +435,10 @@ namespace secretcode_SolomatinKiril
 
             Console.WriteLine();
 
-            endGame(numberOfAttempts, hiddenNumberList);
+            EndGame(numberOfAttempts, hiddenNumberList);
         }
 
+        //Niveau Expert
         static void Expert()
         {
             Console.Title = "Expert";
@@ -487,7 +451,11 @@ namespace secretcode_SolomatinKiril
             int userNumber;
             bool validInput = false;
             bool numberGuessed = false;
+
             int numberOfAttempts = 1;
+            const int MAX_ATTEMPTS = 10;
+            const int NUMBER_LENGTH = 4;
+
             int correctPlace = 0;
             int correctNumber = 0;
 
@@ -499,7 +467,7 @@ namespace secretcode_SolomatinKiril
 
             Console.WriteLine("Essais: \n");
 
-            while (!numberGuessed && numberOfAttempts <= 10)
+            while (!numberGuessed && numberOfAttempts <= MAX_ATTEMPTS)
             {
                 Console.WriteLine(numberOfAttempts + "/10 :");
                 Console.Write("Ente 4 chiffres entre 1 et 9 (ex: 1234) :");
@@ -512,7 +480,7 @@ namespace secretcode_SolomatinKiril
 
                 List<int> notFoundsNumbers = new List<int>(hiddenNumberList);
 
-                if (validInput && userNumberList.Count == 4)
+                if (validInput && userNumberList.Count == NUMBER_LENGTH)
                 {
                     if (userNumberList.SequenceEqual(hiddenNumberList))
                     {
@@ -551,7 +519,7 @@ namespace secretcode_SolomatinKiril
                     userNumberList.Clear();
                 }
 
-                else if (userNumberList.Count != 4)
+                else if (userNumberList.Count != NUMBER_LENGTH)
                 {
                     Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
                     userNumberList.Clear();
@@ -565,12 +533,13 @@ namespace secretcode_SolomatinKiril
             }
             Console.WriteLine();
 
-            endGame(numberOfAttempts, hiddenNumberList);
+            EndGame(numberOfAttempts, hiddenNumberList);
 
 
         }
 
-        static void endGame(int numberOfAttempts, List<int> hiddenNumber)
+        //Méthode qui finit le joue et peut le recommencer ou sortir de la programe
+        static void EndGame(int numberOfAttempts, List<int> hiddenNumber)
         {
             if (numberOfAttempts > 10)
             {
@@ -615,6 +584,7 @@ namespace secretcode_SolomatinKiril
             }
         }
 
+        //Méthode qui genere un nombre aleatoire 
         static void RandomNumberGenerator(List<int> hiddenNumberList, int maxValue, bool allowDuplicates)
         {
             Random random = new Random();
@@ -635,25 +605,67 @@ namespace secretcode_SolomatinKiril
             }
         }
 
-        static void UserInputIsValid(bool validInput, int userNumber, List<int> userNumberList)
+        static bool UserInputIsValid(int userNumber, List<int> userNumberList, int minNumber, int maxNumber, int numberLength)
         {
+            bool validInput = false;
             validInput = int.TryParse(Console.ReadLine(), out userNumber);
+
+            if (!validInput)
+            {
+                Console.WriteLine("Tu n'as pas entré un nombre! Essaie de nouveau");
+                Console.WriteLine();
+                return false;
+            }
 
             foreach (char number in Convert.ToString(userNumber))
             {
                 userNumberList.Add(int.Parse(number.ToString()));
             }
 
-            if (!validInput)
-                Console.WriteLine("Tu n'as pas entré un nombre! Essaie de nouveau");
+            foreach (int n in userNumberList)
+            {
+                if (n < minNumber || n > maxNumber)
+                {
+                    Console.WriteLine("Chiffres entre {0} et {1}", minNumber, maxNumber);
+                    Console.WriteLine();
+                    return false;
+                }
+            }
 
-            if (userNumberList.Count != 4 || validInput)
-                Console.WriteLine("Tu n'as pas donné 4 chiffres ! essaie de nouveau");
+            if (userNumberList.Count != numberLength)
+            {
+                Console.WriteLine("Saisie invalide. Réessaie.");
+                Console.WriteLine();
+                return false;
+            }
+
+            return true;
+        }
+
+        static void ThereIsNotDouble(List <int> userNumberList, ref bool thereIsNotDouble)
+        {
+            for (int i = 0; i < userNumberList.Count - 1; i++)
+            {
+                for (int j = i + 1; j < userNumberList.Count; j++)
+                {
+
+                    if (userNumberList[i] == userNumberList[j])
+                    {
+                        Console.WriteLine("Pas de doublons autorisés à ce niveau.");
+                        Console.WriteLine();
+                        thereIsNotDouble = false;
+                        break;
+                    }
+                    else
+                    {
+                        thereIsNotDouble = true;
+                    }
+                }
+                if (!thereIsNotDouble)
+                    break;
+            }
         }
     }
-
-
-
 }
 
 
